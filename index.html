@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">iainmanclark.com</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About Me</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact Me</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <canvas id="codeCanvas"></canvas>
+    <canvas id="particleCanvas"></canvas>
+
+    <header id="home" class="hero">
+        <div class="hero-content">
+            <h1>My Ideas Playground</h1>
+            <p>This website has been created to capture my personal exploration and development of ideas</p>
+            <a href="#projects" class="cta-button">View My Projects</a>
+        </div>
+    </header>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2>About Me and this website</h2>
+            <p>I'm passionate about developing innovative solutions to everyday problems. Once I find a problem, I use my creativity and technical expertise to solve it. As I develop more solutions, this website will be updated and these simple solutions freely available. At the moment it is very bare, but I hope you will revisit as it grows.</p>
+        </div>
+    </section>
+
+    <section id="projects" class="section">
+        <div class="container">
+            <h2>Featured Projects</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-images"></i>
+                    <h3>Photo Organiser</h3>
+                    <p>An intelligent photo management system that uses Python to organise bulk saved photos using image meta data to guide oraganisation. This app is an ongoing project and open to improvement suggestion.</p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>Image Storage</span>
+                    </div>
+                    <a href="#" class="download-button"><i class="fas fa-download"></i> Download App</a>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>This Website</h3>
+                    <p>I created this website to be different. It is heavily themed around coding. Websites for me all look the same, so I went back and created something a little different.</p>
+                    <div class="project-tech">
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>JavaScript</span>
+                    </div>
+                    <a href="https://github.com/yourusername/my-website" class="download-button"><i class="fas fa-code-branch"></i> View Source</a>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-code"></i>
+                    <h3>Future Project</h3>
+                    <p>Any new project I decide to commence will be detailed here.</p>
+                    <div class="project-tech">
+                        <span>Coming Soon</span>
+                    </div>
+                    <span class="download-button disabled"><i class="fas fa-clock"></i> Coming Soon</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <div class="container">
+            <h2>Let's Connect</h2>
+            <p class="contact-intro">If you would like to contact me for absolutly anything, maybe an idea or just to say hi, please don't hesitate to reach out.</p>
+            <form class="contact-form">
+                <input type="text" placeholder="Name" required>
+                <input type="email" placeholder="Email" required>
+                <textarea placeholder="Message" required></textarea>
+                <button type="submit" class="cta-button">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 iainmanclark.com. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
