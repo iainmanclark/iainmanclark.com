@@ -348,38 +348,41 @@ const sourceCode = document.getElementById('sourceCode');
 // Source code content
 const sourceFiles = {
     html: document.documentElement.outerHTML,
-    css: `/* styles.css */
-/* Loading CSS content... */`,
-    js: `// script.js
-/* Loading JavaScript content... */`
+    css: null,
+    js: null
 };
 
 // Function to fetch file content
 async function fetchFile(url) {
     try {
         const response = await fetch(url);
-        return await response.text();
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const text = await response.text();
+        return text;
     } catch (error) {
         console.error('Error fetching file:', error);
-        return '// Error loading file content';
+        return `// Error loading file content: ${error.message}`;
     }
 }
 
-// Initialize source files content
-async function initializeSourceFiles() {
-    sourceFiles.css = await fetchFile('css/styles.css');
-    sourceFiles.js = await fetchFile('js/script.js');
-}
-
-// Call initialization when page loads
-initializeSourceFiles();
-
-function showSourceCode() {
+async function showSourceCode() {
     modal.style.display = 'block';
+    
+    // Fetch files if not already loaded
+    if (!sourceFiles.css) {
+        sourceCode.textContent = 'Loading...';
+        sourceFiles.css = await fetchFile('css/styles.css');
+    }
+    if (!sourceFiles.js) {
+        sourceFiles.js = await fetchFile('js/script.js');
+    }
+    
     showTab('html'); // Show HTML by default
 }
 
-function showTab(tab) {
+async function showTab(tab) {
     // Update active tab
     document.querySelectorAll('.tab-button').forEach(button => {
         if (button.textContent.toLowerCase().includes(tab)) {
@@ -390,7 +393,15 @@ function showTab(tab) {
     });
 
     // Show corresponding source code
-    sourceCode.textContent = sourceFiles[tab];
+    if (sourceFiles[tab] === null) {
+        sourceCode.textContent = 'Loading...';
+        if (tab === 'css') {
+            sourceFiles.css = await fetchFile('css/styles.css');
+        } else if (tab === 'js') {
+            sourceFiles.js = await fetchFile('js/script.js');
+        }
+    }
+    sourceCode.textContent = sourceFiles[tab] || 'Error loading content';
 }
 
 // Close modal when clicking the X
