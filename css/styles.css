@@ -373,6 +373,25 @@ footer {
     margin-right: 8px;
 }
 
+.download-note {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+    margin: 10px 0;
+    padding: 10px;
+    background-color: var(--bg-tertiary);
+    border-radius: 4px;
+}
+
+.download-steps {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+    margin: 10px 0 15px 25px;
+}
+
+.download-steps li {
+    margin: 5px 0;
+}
+
 /* Modal Styles */
 .modal {
     display: none;
