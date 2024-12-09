@@ -347,16 +347,32 @@ const sourceCode = document.getElementById('sourceCode');
 
 // Source code content
 const sourceFiles = {
-    html: `<!DOCTYPE html>
-<html lang="en">
-<!-- Source code of index.html -->
-${document.documentElement.outerHTML}
-</html>`,
+    html: document.documentElement.outerHTML,
     css: `/* styles.css */
-${document.querySelector('link[href="css/styles.css"]').getAttribute('href')}`,
+/* Loading CSS content... */`,
     js: `// script.js
-${document.querySelector('script[src="js/script.js"]').textContent}`
+/* Loading JavaScript content... */`
 };
+
+// Function to fetch file content
+async function fetchFile(url) {
+    try {
+        const response = await fetch(url);
+        return await response.text();
+    } catch (error) {
+        console.error('Error fetching file:', error);
+        return '// Error loading file content';
+    }
+}
+
+// Initialize source files content
+async function initializeSourceFiles() {
+    sourceFiles.css = await fetchFile('css/styles.css');
+    sourceFiles.js = await fetchFile('js/script.js');
+}
+
+// Call initialization when page loads
+initializeSourceFiles();
 
 function showSourceCode() {
     modal.style.display = 'block';
@@ -366,9 +382,12 @@ function showSourceCode() {
 function showTab(tab) {
     // Update active tab
     document.querySelectorAll('.tab-button').forEach(button => {
-        button.classList.remove('active');
+        if (button.textContent.toLowerCase().includes(tab)) {
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
     });
-    event.target.classList.add('active');
 
     // Show corresponding source code
     sourceCode.textContent = sourceFiles[tab];
