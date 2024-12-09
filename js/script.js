@@ -340,6 +340,52 @@ class CodeAnimationSystem {
     }
 }
 
+// Source Code Modal
+const modal = document.getElementById('sourceModal');
+const closeButton = document.getElementsByClassName('close-button')[0];
+const sourceCode = document.getElementById('sourceCode');
+
+// Source code content
+const sourceFiles = {
+    html: `<!DOCTYPE html>
+<html lang="en">
+<!-- Source code of index.html -->
+${document.documentElement.outerHTML}
+</html>`,
+    css: `/* styles.css */
+${document.querySelector('link[href="css/styles.css"]').getAttribute('href')}`,
+    js: `// script.js
+${document.querySelector('script[src="js/script.js"]').textContent}`
+};
+
+function showSourceCode() {
+    modal.style.display = 'block';
+    showTab('html'); // Show HTML by default
+}
+
+function showTab(tab) {
+    // Update active tab
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
+    event.target.classList.add('active');
+
+    // Show corresponding source code
+    sourceCode.textContent = sourceFiles[tab];
+}
+
+// Close modal when clicking the X
+closeButton.onclick = function() {
+    modal.style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+
 // Initialize both animation systems when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     try {

@@ -53,7 +53,7 @@
                         <span>Python</span>
                         <span>Image Storage</span>
                     </div>
-                    <a href="https://github.com/iainmanclark/PhotoOrganiser/releases/latest" class="download-button"><i class="fas fa-download"></i> Download App</a>
+                    <span class="download-button disabled"><i class="fas fa-clock"></i> Coming Soon</span>
                 </div>
                 <div class="service-card">
                     <i class="fas fa-lightbulb"></i>
@@ -64,7 +64,7 @@
                         <span>CSS</span>
                         <span>JavaScript</span>
                     </div>
-                    <a href="https://github.com/iainmanclark/iainmanclark.com" class="download-button"><i class="fas fa-code-branch"></i> View Source</a>
+                    <button onclick="showSourceCode()" class="download-button"><i class="fas fa-code"></i> View Source</button>
                 </div>
                 <div class="service-card">
                     <i class="fas fa-code"></i>
@@ -97,6 +97,20 @@
             <p>&copy; 2024 iainmanclark.com. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Source Code Modal -->
+    <div id="sourceModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Website Source Code</h2>
+            <div class="source-tabs">
+                <button class="tab-button active" onclick="showTab('html')">HTML</button>
+                <button class="tab-button" onclick="showTab('css')">CSS</button>
+                <button class="tab-button" onclick="showTab('js')">JavaScript</button>
+            </div>
+            <pre id="sourceCode"></pre>
+        </div>
+    </div>
 
     <script src="js/script.js"></script>
 </body>
