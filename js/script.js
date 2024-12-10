@@ -361,52 +361,197 @@ const sourceFiles = {
 async function fetchFile(url) {
     try {
         const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const text = await response.text();
-        return text;
+        return await response.text();
     } catch (error) {
         console.error('Error fetching file:', error);
-        return `// Error loading file content: ${error.message}`;
+        return 'Error loading file content';
     }
 }
 
+// Function to show source code
 async function showSourceCode() {
     modal.style.display = 'block';
     
-    // Fetch files if not already loaded
-    if (!sourceFiles.css) {
-        sourceCode.textContent = 'Loading...';
-        sourceFiles.css = await fetchFile('css/styles.css');
-    }
-    if (!sourceFiles.js) {
-        sourceFiles.js = await fetchFile('js/script.js');
-    }
+    // Fetch and display HTML content
+    const htmlContent = await fetchFile('index.html');
+    document.getElementById('htmlContent').textContent = htmlContent;
     
-    showTab('html'); // Show HTML by default
+    // Fetch and display CSS content
+    const cssContent = await fetchFile('css/styles.css');
+    document.getElementById('cssContent').textContent = cssContent;
+    
+    // Fetch and display JavaScript content
+    const jsContent = await fetchFile('js/script.js');
+    document.getElementById('jsContent').textContent = jsContent;
+    
+    // Fetch and display Python content
+    const pythonContent = `import os
+import shutil
+from datetime import datetime
+from pathlib import Path
+import tkinter as tk
+from tkinter import filedialog, messagebox, ttk
+from PIL import Image
+from PIL.ExifTags import TAGS
+
+class PhotoOrganizer:
+    def __init__(self):
+        self.window = tk.Tk()
+        self.window.title("Photo Organizer")
+        self.window.geometry("800x600")
+        self.window.configure(bg="#f0f0f0")
+        self.window.minsize(800, 600)
+        
+        # Create UI elements
+        self.create_widgets()
+        
+    def create_widgets(self):
+        # Create main frame
+        self.main_frame = ttk.Frame(self.window, padding="10")
+        self.main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        
+        # Source folder selection
+        ttk.Label(self.main_frame, text="Select Source Folder:").grid(row=0, column=0, sticky=tk.W)
+        self.source_entry = ttk.Entry(self.main_frame, width=50)
+        self.source_entry.grid(row=1, column=0, padx=5)
+        ttk.Button(self.main_frame, text="Browse", command=self.browse_source).grid(row=1, column=1)
+        
+        # Destination folder selection
+        ttk.Label(self.main_frame, text="Select Destination Folder:").grid(row=2, column=0, sticky=tk.W, pady=(10,0))
+        self.dest_entry = ttk.Entry(self.main_frame, width=50)
+        self.dest_entry.grid(row=3, column=0, padx=5)
+        ttk.Button(self.main_frame, text="Browse", command=self.browse_dest).grid(row=3, column=1)
+        
+        # Organize button
+        self.organize_button = ttk.Button(self.main_frame, text="Organize Photos", command=self.organize_photos)
+        self.organize_button.grid(row=4, column=0, columnspan=2, pady=20)
+        
+        # Progress bar
+        self.progress = ttk.Progressbar(self.main_frame, length=400, mode='determinate')
+        self.progress.grid(row=5, column=0, columnspan=2, pady=10)
+        
+        # Status label
+        self.status_label = ttk.Label(self.main_frame, text="")
+        self.status_label.grid(row=6, column=0, columnspan=2)
+    
+    def browse_source(self):
+        folder = filedialog.askdirectory()
+        if folder:
+            self.source_entry.delete(0, tk.END)
+            self.source_entry.insert(0, folder)
+    
+    def browse_dest(self):
+        folder = filedialog.askdirectory()
+        if folder:
+            self.dest_entry.delete(0, tk.END)
+            self.dest_entry.insert(0, folder)
+    
+    def get_date_taken(self, image_path):
+        try:
+            image = Image.open(image_path)
+            exif = image._getexif()
+            if exif:
+                for tag_id in exif:
+                    tag = TAGS.get(tag_id, tag_id)
+                    data = exif.get(tag_id)
+                    if tag == 'DateTimeOriginal':
+                        return datetime.strptime(data, '%Y:%m:%d %H:%M:%S')
+        except Exception as e:
+            print(f"Error reading EXIF data: {e}")
+        return None
+    
+    def organize_photos(self):
+        source_dir = self.source_entry.get()
+        dest_dir = self.dest_entry.get()
+        
+        if not source_dir or not dest_dir:
+            messagebox.showerror("Error", "Please select both source and destination folders")
+            return
+        
+        try:
+            # Get list of image files
+            image_files = []
+            for root, dirs, files in os.walk(source_dir):
+                for file in files:
+                    if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')):
+                        image_files.append(os.path.join(root, file))
+            
+            if not image_files:
+                messagebox.showinfo("Info", "No image files found in the source directory")
+                return
+            
+            # Configure progress bar
+            self.progress['maximum'] = len(image_files)
+            self.progress['value'] = 0
+            
+            # Process each image
+            for i, image_path in enumerate(image_files):
+                # Update progress
+                self.progress['value'] = i + 1
+                self.status_label['text'] = f"Processing: {os.path.basename(image_path)}"
+                self.window.update()
+                
+                # Get image date
+                date_taken = self.get_date_taken(image_path)
+                if date_taken:
+                    # Create year/month folders
+                    year_folder = os.path.join(dest_dir, str(date_taken.year))
+                    month_folder = os.path.join(year_folder, date_taken.strftime('%m-%B'))
+                    
+                    # Create folders if they don't exist
+                    os.makedirs(month_folder, exist_ok=True)
+                    
+                    # Copy file to destination
+                    dest_path = os.path.join(month_folder, os.path.basename(image_path))
+                    shutil.copy2(image_path, dest_path)
+                else:
+                    # If no date found, put in 'unsorted' folder
+                    unsorted_folder = os.path.join(dest_dir, 'unsorted')
+                    os.makedirs(unsorted_folder, exist_ok=True)
+                    dest_path = os.path.join(unsorted_folder, os.path.basename(image_path))
+                    shutil.copy2(image_path, dest_path)
+            
+            self.status_label['text'] = "Organization complete!"
+            messagebox.showinfo("Success", "Photos have been organized successfully!")
+            
+            # Open destination folder
+            if os.name == 'nt':  # Windows
+                os.startfile(dest_dir)
+            else:  # macOS and Linux
+                subprocess.run(['xdg-open', dest_dir])
+                
+        except Exception as e:
+            messagebox.showerror("Error", f"An error occurred: {str(e)}")
+            self.status_label['text'] = "Error occurred during organization"
+        
+        finally:
+            # Reset progress bar
+            self.progress['value'] = 0
+    
+    def run(self):
+        self.window.mainloop()
+
+if __name__ == "__main__":
+    app = PhotoOrganizer()
+    app.run()`;
+    document.getElementById('pythonContent').textContent = pythonContent;
 }
 
-async function showTab(tab) {
-    // Update active tab
-    document.querySelectorAll('.tab-button').forEach(button => {
-        if (button.textContent.toLowerCase().includes(tab)) {
-            button.classList.add('active');
-        } else {
-            button.classList.remove('active');
-        }
+// Function to switch between tabs
+function showTab(tab) {
+    // Hide all content
+    document.querySelectorAll('.source-content').forEach(content => {
+        content.classList.remove('active');
     });
-
-    // Show corresponding source code
-    if (sourceFiles[tab] === null) {
-        sourceCode.textContent = 'Loading...';
-        if (tab === 'css') {
-            sourceFiles.css = await fetchFile('css/styles.css');
-        } else if (tab === 'js') {
-            sourceFiles.js = await fetchFile('js/script.js');
-        }
-    }
-    sourceCode.textContent = sourceFiles[tab] || 'Error loading content';
+    
+    // Show selected content
+    document.getElementById(tab + 'Content').classList.add('active');
+    
+    // Update tab buttons
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
+    document.querySelector(`button[onclick="showTab('${tab}')"]`).classList.add('active');
 }
 
 // Close modal when clicking the X
