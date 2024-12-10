@@ -25,24 +25,29 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // Form Submission Handler
 const contactForm = document.querySelector('.contact-form');
 if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
+    contactForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        // Get form data
-        const formData = new FormData(this);
-        const formObject = {};
-        formData.forEach((value, key) => {
-            formObject[key] = value;
-        });
-
-        // Here you would typically send the form data to a server
-        console.log('Form submitted:', formObject);
-        
-        // Clear form
-        this.reset();
-        
-        // Show success message (you can customize this)
-        alert('Thank you for your message! We will get back to you soon.');
+        try {
+            const response = await fetch(this.action, {
+                method: 'POST',
+                body: new FormData(this),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                // Clear form
+                this.reset();
+                alert('Thank you for your message! I will get back to you soon.');
+            } else {
+                throw new Error('Failed to send message');
+            }
+        } catch (error) {
+            alert('Oops! There was a problem sending your message. Please try again.');
+            console.error('Form submission error:', error);
+        }
     });
 }
 
