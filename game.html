@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Breaker - Pattern Recognition Game</title>
+    <link rel="stylesheet" href="css/codebreaker.v3.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1>Code Breaker</h1>
+            <p>Identify the pattern before time runs out!</p>
+        </div>
+        
+        <div class="game-layout">
+            <div class="game-instructions">
+                <h2>How to Play</h2>
+                <ol>
+                    <li>A pattern will appear briefly on the screen</li>
+                    <li>Memorize the pattern's elements and their positions</li>
+                    <li>Choose the matching pattern from the options</li>
+                    <li>Be quick! You have limited time</li>
+                </ol>
+                <div class="game-tips">
+                    <h3>Tips</h3>
+                    <ul>
+                        <li>Patterns get more complex as you level up</li>
+                        <li>Time limit decreases with each level</li>
+                        <li>Score points based on speed and level</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="game-area">
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Level</span>
+                        <span class="stat-value" id="levelDisplay">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Score</span>
+                        <span class="stat-value" id="scoreDisplay">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Time</span>
+                        <span class="stat-value" id="timeDisplay">5</span>
+                    </div>
+                </div>
+
+                <canvas id="gameCanvas"></canvas>
+                
+                <div class="game-controls">
+                    <button id="startGame" class="game-button">Start New Game</button>
+                    <button id="pauseGame" class="game-button" style="display: none;">Pause</button>
+                </div>
+
+                <div class="pattern-options-container">
+                    <div id="leftOptions" class="options-column"></div>
+                    <div id="rightOptions" class="options-column"></div>
+                </div>
+            </div>
+
+            <div class="high-scores">
+                <h2>Top Players</h2>
+                <div id="highScoresList">
+                    <!-- High scores will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js?v=3"></script>
+    <script src="js/user-profile.js?v=3"></script>
+    <script src="js/codebreaker.v3.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Initializing game...');
+            try {
+                const game = new CodeBreaker('gameCanvas');
+                console.log('Game initialized:', game);
+                
+                // Store game instance globally for debugging
+                window.gameInstance = game;
+            } catch (error) {
+                console.error('Error initializing game:', error);
+            }
+        });
+    </script>
+</body>
+</html>

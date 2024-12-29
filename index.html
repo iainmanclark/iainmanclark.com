@@ -5,9 +5,10 @@
      crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome - Updated Dec 9, 2024</title>
+    <title>Iain Manclark</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/codebreaker.v4.css">
 </head>
 <body>
     <nav class="navbar">
@@ -16,6 +17,7 @@
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About Me</a></li>
             <li><a href="#projects">Projects</a></li>
+            <li><a href="#game">Code Breaker</a></li>
             <li><a href="#contact">Contact Me</a></li>
         </ul>
         <div class="hamburger">
@@ -55,7 +57,7 @@
                         <span>Python</span>
                         <span>Image Storage</span>
                     </div>
-                    <p class="download-note">Note: The app is unavailable due to windows being overly cautious on app downloads, but the source code is available for copying and compiling in the website source code.</p>
+                    <p class="download-note">Note: The app will not be available due to windows being overly cautious on app downloads, but the source code is available for copying and compiling in the website source code.</p>
                     <span class="download-button disabled"><i class="fas fa-clock"></i> Download Coming Soon</span>
                 </div>
                 <div class="service-card">
@@ -78,6 +80,86 @@
                         <span>Coming Soon</span>
                     </div>
                     <span class="download-button disabled"><i class="fas fa-clock"></i> Coming Soon</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Section -->
+    <section id="game" class="section game-section">
+        <div class="container">
+            <h2 class="section-title">Code Breaker Game</h2>
+            <div class="game-layout">
+                <div class="game-container">
+                    <div class="game-tips">
+                        <h3>How To Play</h3>
+                        <div class="tips-content">
+                            <ul>
+                                <li><span class="tip-highlight">Important:</span> Patterns may look very similar - differences can be as subtle as a slight position change or tiny detail!</li>
+                                <li><span class="tip-highlight">Observe:</span> Study every detail of the pattern carefully. Look for exact positions, sizes, and rotations.</li>
+                                <li><span class="tip-highlight">Remember:</span> The pattern will disappear after a few seconds - memorize every detail.</li>
+                                <li><span class="tip-highlight">Compare:</span> Look closely at all four options. Only one matches exactly!</li>
+                                <li><span class="tip-highlight">Warning:</span> Don't be fooled by similar patterns. They may differ by just one tiny detail.</li>
+                                <li><span class="tip-highlight">Focus:</span> As levels increase, differences become more and more subtle.</li>
+                                <li><span class="tip-highlight">Score:</span> Earn points based on speed and level - but accuracy is key!</li>
+                                <li><span class="tip-highlight">Time:</span> Work quickly but carefully. Better to take an extra second than choose wrong!</li>
+                                <li><span class="tip-highlight">Challenge:</span> Try to beat your high score by mastering pattern recognition.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="game-play-area">
+                        <div class="options-container">
+                            <div id="leftOptions"></div>
+                        </div>
+                        
+                        <div class="game-center">
+                            <div class="game-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Level</span>
+                                    <span class="stat-value" id="levelDisplay">1</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Score</span>
+                                    <span class="stat-value" id="scoreDisplay">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Time</span>
+                                    <span class="stat-value" id="timeDisplay">10</span>
+                                </div>
+                            </div>
+
+                            <div class="game-canvas-container">
+                                <canvas id="gameCanvas"></canvas>
+                            </div>
+
+                            <div class="game-controls">
+                                <button id="startGame" class="game-button">Start New Game</button>
+                                <button id="pauseGame" class="game-button" style="display: none;">Pause</button>
+                            </div>
+                        </div>
+                        
+                        <div class="options-container">
+                            <div id="rightOptions"></div>
+                        </div>
+                    </div>
+
+                    <div class="high-scores-container">
+                        <div id="highScores">
+                            <h3>High Scores</h3>
+                            <!-- High scores table will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add modal for name input -->
+                <div id="nameInputModal" class="modal">
+                    <div class="modal-content">
+                        <h3>New High Score!</h3>
+                        <p>Enter your name:</p>
+                        <input type="text" id="playerName" maxlength="20" placeholder="Your name">
+                        <button id="submitScore" class="game-button">Submit</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -123,5 +205,27 @@
     </div>
 
     <script src="js/script.js"></script>
+    <script src="js/user-profile.js"></script>
+    <script src="js/codebreaker.v3.js"></script>
+    <script>
+        console.log('Loading game scripts...');
+        window.addEventListener('load', () => {
+            console.log('Window loaded, initializing game...');
+            try {
+                // Initialize particles
+                if (window.particlesJS) {
+                    particlesJS.load('particles-js', 'particles.json', function() {
+                        console.log('particles.js loaded');
+                    });
+                }
+                
+                // Initialize game
+                const game = new CodeBreaker('gameCanvas');
+                console.log('Game initialized:', game);
+            } catch (error) {
+                console.error('Error initializing game:', error);
+            }
+        });
+    </script>
 </body>
 </html>

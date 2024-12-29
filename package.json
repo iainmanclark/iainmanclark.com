@@ -1,0 +1,12 @@
+{
+  "name": "my-website",
+  "version": "1.0.0",
+  "description": "Personal portfolio website with CodeBreaker game",
+  "scripts": {
+    "start": "live-server --port=8000 --host=localhost --no-browser",
+    "dev": "live-server --port=8000 --host=localhost"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
