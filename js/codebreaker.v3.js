@@ -325,6 +325,38 @@ class CodeBreaker {
         } else {
             console.error('Pause button not found');
         }
+        
+        // Add touch events for mobile
+        this.canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            this.handlePatternClick(e.touches[0]);
+        });
+
+        // Handle window resize for responsive canvas
+        window.addEventListener('resize', () => {
+            this.handleResize();
+        });
+
+        // Handle mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (navLinks && navLinks.classList.contains('active') && 
+                !navLinks.contains(e.target) && 
+                !hamburger.contains(e.target)) {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
     }
 
     generateNewPattern() {
@@ -952,5 +984,39 @@ class CodeBreaker {
     togglePause() {
         // TODO: Implement pause functionality
         console.log('Pause toggled');
+    }
+
+    handleResize() {
+        // Adjust canvas size based on screen width
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+            const newSize = Math.min(window.innerWidth - 40, 300);
+            this.canvas.width = newSize;
+            this.canvas.height = newSize;
+        } else {
+            this.canvas.width = 150;
+            this.canvas.height = 150;
+        }
+
+        // Redraw current state
+        if (this.currentPattern) {
+            this.drawPattern(this.currentPattern);
+        } else {
+            this.drawEmptyState();
+        }
+    }
+
+    handlePatternClick(event) {
+        if (this.gameState !== 'playing') return;
+
+        const rect = event.target.getBoundingClientRect();
+        const x = (event.clientX || event.touches[0].clientX) - rect.left;
+        const y = (event.clientY || event.touches[0].clientY) - rect.top;
+        
+        // Scale coordinates based on canvas size
+        const scaleX = this.canvas.width / rect.width;
+        const scaleY = this.canvas.height / rect.height;
+        
+        this.checkPattern(x * scaleX, y * scaleY);
     }
 }

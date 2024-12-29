@@ -945,3 +945,89 @@ footer {
         height: 100px !important;
     }
 }
+
+/* Mobile-friendly adjustments */
+@media screen and (max-width: 768px) {
+    .game-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .game-container {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .pattern-option {
+        width: 120px;
+        height: 120px;
+        margin: 5px;
+        touch-action: manipulation;
+    }
+
+    #leftOptions, #rightOptions {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin: 10px 0;
+    }
+
+    .game-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        align-items: center;
+    }
+
+    .game-controls button {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 10px 20px;
+        font-size: 16px;
+        margin: 5px 0;
+    }
+
+    .game-tips {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .score-display {
+        font-size: 1.2em;
+        margin: 10px 0;
+    }
+
+    .timer-display {
+        font-size: 1.2em;
+        margin: 10px 0;
+    }
+}
+
+/* Hamburger menu for mobile */
+@media screen and (max-width: 768px) {
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--bg-secondary);
+        flex-direction: column;
+        padding: 20px 0;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        margin: 10px 0;
+        text-align: center;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+}
