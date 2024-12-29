@@ -1054,3 +1054,39 @@ footer {
         display: flex;
     }
 }
+
+/* Mobile warning styles */
+.mobile-warning {
+    display: none;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--accent-orange);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.mobile-warning i {
+    color: var(--accent-orange);
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.mobile-warning p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+@media screen and (max-width: 768px) {
+    .mobile-warning {
+        display: block;
+    }
+
+    /* Hide warning in landscape */
+    @media (orientation: landscape) {
+        .mobile-warning {
+            display: none;
+        }
+    }
+}
